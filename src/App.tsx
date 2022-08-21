@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { Box } from "./Box";
@@ -16,8 +16,6 @@ function App() {
       step: 0.1,
     }
   });
-
-
 
   async function loadImage(e: React.ChangeEvent<HTMLInputElement>, setter: (image: HTMLImageElement) => void) {
     if (e?.target?.files?.[0]) {
