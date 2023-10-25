@@ -37,21 +37,6 @@ function setdefaultImage(src: string): HTMLImageElement {
 function App() {
   const [images, setImages] = useState<ImageState>(defaultImages);
 
-  const { lightIntensity, aoIntensity } = useControls({
-    lightIntensity: {
-      value: 1,
-      min: 0,
-      max: 3,
-      step: 0.1,
-    },
-    aoIntensity: {
-      value: 1,
-      min: 0.1,
-      max: 10,
-      step: 0.1,
-    },
-  });
-
   const loadImage = async (
     e: ChangeEvent<HTMLInputElement>,
     key: keyof ImageState
@@ -77,12 +62,10 @@ function App() {
       <Canvas>
         <CameraController />
         <ambientLight color={"#5C5C5C"} />
-        <directionalLight position={[1, 1, 1]} intensity={lightIntensity} />
         <Box
           mapImage={images.textureImage}
           normalImage={images.normalImage}
           aoImage={images.aoImage}
-          aoIntensity={aoIntensity}
         />
       </Canvas>
 

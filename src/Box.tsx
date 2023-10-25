@@ -12,14 +12,28 @@ type Props = {
   normalImage: HTMLImageElement | null;
   mapImage: HTMLImageElement | null;
   aoImage: HTMLImageElement | null;
-  aoIntensity: number;
 };
 
-export function Box({ mapImage, normalImage, aoImage, aoIntensity }: Props) {
+export function Box({ mapImage, normalImage, aoImage }: Props) {
   const mesh = useRef<Mesh>(null!);
   const [active, setActive] = useState(false);
 
-  const { repeatX, repeatY } = useControls("Repeat", {
+  const { lightIntensity, aoIntensity } = useControls("Intensity", {
+    lightIntensity: {
+      value: 1,
+      min: 0,
+      max: 3,
+      step: 0.1,
+    },
+    aoIntensity: {
+      value: 1,
+      min: 0.1,
+      max: 10,
+      step: 0.1,
+    },
+  });
+
+  const { repeatX, repeatY, normalScale } = useControls("Repeat", {
     repeatX: {
       value: 4,
       min: 1,
@@ -32,9 +46,6 @@ export function Box({ mapImage, normalImage, aoImage, aoIntensity }: Props) {
       max: 10,
       step: 1,
     },
-  });
-  
-  const { normalScale } = useControls({
     normalScale: {
       value: 2,
       min: 0.5,
@@ -87,15 +98,19 @@ export function Box({ mapImage, normalImage, aoImage, aoIntensity }: Props) {
   const aoTexture = createTexture(aoImage, mirrorWrapX, mirrorWrapY);
 
   return (
-    <mesh ref={mesh} onClick={() => setActive(!active)}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial
-        map={texture}
-        normalMap={normal}
-        normalScale={new Vector2(normalScale, normalScale)}
-        aoMap={aoTexture}
-        aoMapIntensity={aoIntensity}
-      />
-    </mesh>
+    <>
+      <directionalLight position={[1, 1, 1]} intensity={lightIntensity} />
+
+      <mesh ref={mesh} onClick={() => setActive(!active)}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial
+          map={texture}
+          normalMap={normal}
+          normalScale={new Vector2(normalScale, normalScale)}
+          aoMap={aoTexture}
+          aoMapIntensity={aoIntensity}
+        />
+      </mesh>
+    </>
   );
 }
