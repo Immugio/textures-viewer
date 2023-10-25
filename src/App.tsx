@@ -23,10 +23,16 @@ const imageInputs: ImageInputs[] = [
 ];
 
 const defaultImages: ImageState = {
-  textureImage: null,
-  normalImage: null,
-  aoImage: null,
+  textureImage: setdefaultImage("/texture.jpg"),
+  normalImage: setdefaultImage("/normal.png"),
+  aoImage: setdefaultImage("/ao.jpg"),
 };
+
+function setdefaultImage(src: string): HTMLImageElement {
+  const image = new Image();
+  image.src = src;
+  return image;
+}
 
 function App() {
   const [images, setImages] = useState<ImageState>(defaultImages);
@@ -46,15 +52,19 @@ function App() {
     },
   });
 
-  const loadImage = (
+  const loadImage = async (
     e: ChangeEvent<HTMLInputElement>,
     key: keyof ImageState
   ) => {
     if (e?.target?.files?.[0]) {
       const data = URL.createObjectURL(e.target.files[0]);
       const image = document.createElement("img");
+
+      image.onload = () => {
+        setImages((prevImages) => ({ ...prevImages, [key]: image }));
+      };
+
       image.src = data;
-      setImages((prevImages) => ({ ...prevImages, [key]: image }));
     }
   };
 

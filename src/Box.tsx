@@ -1,11 +1,9 @@
-import { useLoader } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import {
   Mesh,
   MirroredRepeatWrapping,
   RepeatWrapping,
   Texture,
-  TextureLoader,
   Vector2,
 } from "three";
 import { useControls } from "leva";
@@ -35,6 +33,7 @@ export function Box({ mapImage, normalImage, aoImage, aoIntensity }: Props) {
       step: 1,
     },
   });
+  
   const { normalScale } = useControls({
     normalScale: {
       value: 2,
@@ -53,24 +52,39 @@ export function Box({ mapImage, normalImage, aoImage, aoIntensity }: Props) {
     },
   });
 
-  const defaultTexture = useLoader(TextureLoader, "texture.jpg");
-  const texture = mapImage ? new Texture(mapImage) : defaultTexture;
-  texture.repeat.set(repeatX, repeatY);
-  texture.wrapS = mirrorWrapX ? MirroredRepeatWrapping : RepeatWrapping;
-  texture.wrapT = mirrorWrapY ? MirroredRepeatWrapping : RepeatWrapping;
-  texture.needsUpdate = true;
+  const placeholderTexture = new Texture();
+  placeholderTexture.image = new Image();
 
-  const defaultNormal = useLoader(TextureLoader, "normal.png");
-  const normal = normalImage ? new Texture(normalImage) : defaultNormal;
-  normal.wrapS = mirrorWrapX ? MirroredRepeatWrapping : RepeatWrapping;
-  normal.wrapT = mirrorWrapY ? MirroredRepeatWrapping : RepeatWrapping;
-  normal.needsUpdate = true;
+  const createTexture = (
+    image: HTMLImageElement | null,
+    wrapX: boolean,
+    wrapY: boolean
+  ): Texture | null => {
+    if (image) {
+      const texture = new Texture();
+      texture.image = image;
 
-  const defaultAO = useLoader(TextureLoader, "ao.jpg");
-  const aoTexture = aoImage ? new Texture(aoImage) : defaultAO;
-  aoTexture.wrapS = mirrorWrapX ? MirroredRepeatWrapping : RepeatWrapping;
-  aoTexture.wrapT = mirrorWrapY ? MirroredRepeatWrapping : RepeatWrapping;
-  aoTexture.needsUpdate = true;
+      if (image.complete) {
+        texture.needsUpdate = true;
+      } else {
+        image.addEventListener("load", () => {
+          texture.needsUpdate = true;
+        });
+      }
+
+      texture.repeat.set(repeatX, repeatY);
+      texture.wrapS = wrapX ? MirroredRepeatWrapping : RepeatWrapping;
+      texture.wrapT = wrapY ? MirroredRepeatWrapping : RepeatWrapping;
+
+      return texture;
+    } else {
+      return placeholderTexture;
+    }
+  };
+
+  const texture = createTexture(mapImage, mirrorWrapX, mirrorWrapY);
+  const normal = createTexture(normalImage, mirrorWrapX, mirrorWrapY);
+  const aoTexture = createTexture(aoImage, mirrorWrapX, mirrorWrapY);
 
   return (
     <mesh ref={mesh} onClick={() => setActive(!active)}>
