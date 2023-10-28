@@ -7,24 +7,13 @@ import {
   Vector2,
 } from "three";
 import { useControls } from "leva";
+import { ImageState, setDefaultImages } from "./imageUtils";
 
-type Props = {
-  normalImage: HTMLImageElement | null;
-  mapImage: HTMLImageElement | null;
-  aoImage: HTMLImageElement | null;
-};
-
-export function Box({ mapImage, normalImage, aoImage }: Props) {
+export function Box({ images }: { images: ImageState }) {
   const mesh = useRef<Mesh>(null!);
   const [active, setActive] = useState(false);
 
-  const { lightIntensity, aoIntensity } = useControls("Intensity", {
-    lightIntensity: {
-      value: 1,
-      min: 0,
-      max: 3,
-      step: 0.1,
-    },
+  const { aoIntensity } = useControls({
     aoIntensity: {
       value: 1,
       min: 0.1,
@@ -93,24 +82,32 @@ export function Box({ mapImage, normalImage, aoImage }: Props) {
     }
   };
 
-  const texture = createTexture(mapImage, mirrorWrapX, mirrorWrapY);
-  const normal = createTexture(normalImage, mirrorWrapX, mirrorWrapY);
-  const aoTexture = createTexture(aoImage, mirrorWrapX, mirrorWrapY);
+  const allImagesAreNull =
+    images.textureImage === null &&
+    images.normalImage === null &&
+    images.aoImage === null;
+  const { textureImage, aoImage, normalImage } = setDefaultImages();
+
+  const texture = allImagesAreNull
+    ? createTexture(textureImage, mirrorWrapX, mirrorWrapY)
+    : createTexture(images.textureImage, mirrorWrapX, mirrorWrapY);
+  const normal = allImagesAreNull
+    ? createTexture(normalImage, mirrorWrapX, mirrorWrapY)
+    : createTexture(images.normalImage, mirrorWrapX, mirrorWrapY);
+  const aoTexture = allImagesAreNull
+    ? createTexture(aoImage, mirrorWrapX, mirrorWrapY)
+    : createTexture(images.aoImage, mirrorWrapX, mirrorWrapY);
 
   return (
-    <>
-      <directionalLight position={[1, 1, 1]} intensity={lightIntensity} />
-
-      <mesh ref={mesh} onClick={() => setActive(!active)}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial
-          map={texture}
-          normalMap={normal}
-          normalScale={new Vector2(normalScale, normalScale)}
-          aoMap={aoTexture}
-          aoMapIntensity={aoIntensity}
-        />
-      </mesh>
-    </>
+    <mesh ref={mesh} onClick={() => setActive(!active)}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial
+        map={texture}
+        normalMap={normal}
+        normalScale={new Vector2(normalScale, normalScale)}
+        aoMap={aoTexture}
+        aoMapIntensity={aoIntensity}
+      />
+    </mesh>
   );
 }

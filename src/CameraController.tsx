@@ -1,20 +1,28 @@
 import { useThree } from "@react-three/fiber";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 export function CameraController() {
-    const { camera, gl } = useThree();
-    camera.position.set(2, .8, .6);
-    useEffect(
-        () => {
-            const controls = new OrbitControls(camera, gl.domElement);
-            controls.minDistance = 1;
-            controls.maxDistance = 100;
-            return () => {
-                controls.dispose();
-            };
-        },
-        [camera, gl]
-    );
-    return null;
+  const { camera, gl } = useThree();
+  const [positionSet, setPositionSet] = useState(false);
+
+  useEffect(() => {
+    if (!positionSet) {
+      camera.position.set(2, 0.8, 0.6);
+      setPositionSet(true);
+    }
+  }, [camera.position ,positionSet]);
+
+  useEffect(
+      () => {
+        const controls = new OrbitControls(camera, gl.domElement);
+        controls.minDistance = 1;
+        controls.maxDistance = 100;
+        return () => {
+          controls.dispose();
+        };
+      },
+      [camera, gl]
+  );
+  return null;
 }
