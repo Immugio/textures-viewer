@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
-import { ImageInputs, ImageState, imageInputs } from "./imageUtils";
+import { ImageInputs, imageInputs } from "./imageUtils";
+import { ImageState } from "./common";
 
 interface ImageUploaderProps {
     images: ImageState;

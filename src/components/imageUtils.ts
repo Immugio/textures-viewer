@@ -1,3 +1,5 @@
+import { ImageState } from "./common";
+
 export function setDefaultImages() {
   return {
     textureImage: setDefaultImage("/texture.jpg"),
@@ -10,12 +12,6 @@ export function setDefaultImage(src: string): HTMLImageElement {
   const image = new Image();
   image.src = src;
   return image;
-}
-
-export interface ImageState {
-  textureImage: HTMLImageElement | null;
-  normalImage: HTMLImageElement | null;
-  aoImage: HTMLImageElement | null;
 }
 
 export interface ImageInputs {
