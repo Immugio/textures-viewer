@@ -54,20 +54,7 @@ function App() {
   const {
     roughness,
     metalness,
-    bumpScale,
-    emissiveIntensity,
-    envMapIntensity,
-    lightMapIntensity,
-    displacementScale,
-    displacementBias,
-    opacity
   } = useControls("Material", {
-    opacity: {
-      value: 1,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
     roughness: {
       value: 0.5,
       min: 0,
@@ -77,42 +64,6 @@ function App() {
     metalness: {
       value: 0.0,
       min: 0,
-      max: 1,
-      step: 0.01,
-    },
-    bumpScale: {
-      value: 1,
-      min: 0,
-      max: 2,
-      step: 0.1,
-    },
-    emissiveIntensity: {
-      value: 1,
-      min: 0,
-      max: 2,
-      step: 0.1,
-    },
-    envMapIntensity: {
-      value: 1,
-      min: 0,
-      max: 2,
-      step: 0.1,
-    },
-    lightMapIntensity: {
-      value: 1,
-      min: 0,
-      max: 2,
-      step: 0.1,
-    },
-    displacementScale: {
-      value: 1,
-      min: 0,
-      max: 2,
-      step: 0.1,
-    },
-    displacementBias: {
-      value: 0,
-      min: -1,
       max: 1,
       step: 0.01,
     },
@@ -164,16 +115,9 @@ function App() {
     map,
     normalMap,
     aoMap,
-    opacity,
     roughness,
     metalness,
-    bumpScale,
     aoMapIntensity,
-    envMapIntensity,
-    displacementScale,
-    displacementBias,
-    emissiveIntensity,
-    lightMapIntensity,
     normalScale: new Vector2(normalScale, normalScale)
   };
 
