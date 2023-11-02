@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { CameraController } from "./components/CameraController";
 import { useControls } from "leva";
@@ -8,40 +7,23 @@ import { ImageUploader } from "./components/ImageUploader";
 import { Box } from "./Box";
 import { MirroredRepeatWrapping, RepeatWrapping, Texture, Vector2 } from "three";
 import { ImageState } from "./components/common";
+import { Environment } from '@react-three/drei'
 
 function App() {
   const [images, setImages] = useState<ImageState>(setDefaultImages());
 
-  const { lightIntensity } = useControls({
+  const { lightIntensity, aoMapIntensity, normalScale } = useControls({
     lightIntensity: {
-      value: 1,
+      value: 5,
       min: 0,
-      max: 3,
+      max: 10,
       step: 0.1,
     },
-  });
-
-  const { aoMapIntensity } = useControls({
     aoMapIntensity: {
       value: 1,
       min: 0.1,
       max: 10,
       step: 0.1,
-    },
-  });
-
-  const { repeatX, repeatY, normalScale } = useControls("Repeat", {
-    repeatX: {
-      value: 4,
-      min: 1,
-      max: 10,
-      step: 1,
-    },
-    repeatY: {
-      value: 4,
-      min: 1,
-      max: 10,
-      step: 1,
     },
     normalScale: {
       value: 2,
@@ -51,10 +33,40 @@ function App() {
     },
   });
 
+  const { repeatX, repeatY } = useControls("Repeat", {
+    repeatX: {
+      value: 1,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+    repeatY: {
+      value: 1,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+  });
+
   const {
+    opacity,
+    emissive,
+    emissiveIntensity,
     roughness,
     metalness,
+    displacementBias,
+    displacementScale,
+    envMapIntensity
   } = useControls("Material", {
+    emissive: {
+      value: "#000",
+    },
+    emissiveIntensity: {
+      value: 0.2,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
     roughness: {
       value: 0.5,
       min: 0,
@@ -65,6 +77,30 @@ function App() {
       value: 0.0,
       min: 0,
       max: 1,
+      step: 0.01,
+    },
+    displacementBias: {
+      value: 0.0,
+      min: -1.0,
+      max: 1.0,
+      step: 0.01,
+    },
+    displacementScale: {
+      value: 0.0,
+      min: 0.0,
+      max: 2.0,
+      step: 0.01,
+    },
+    opacity: {
+      value: 1.0,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    envMapIntensity: {
+      value: 1.0,
+      min: 0,
+      max: 2,
       step: 0.01,
     },
   });
@@ -108,25 +144,37 @@ function App() {
   };
 
   const map = createTexture(images.textureImage, mirrorWrapX, mirrorWrapY)
-  const normalMap = createTexture(images.normalImage, mirrorWrapX, mirrorWrapY)
   const aoMap = createTexture(images.aoImage, mirrorWrapX, mirrorWrapY)
+  const normalMap = createTexture(images.normalImage, mirrorWrapX, mirrorWrapY)
+  const displacementMap = createTexture(images.displacementImage, mirrorWrapX, mirrorWrapY)
 
   const materialProps = {
     map,
-    normalMap,
     aoMap,
+    normalMap,
+    displacementMap,
+    opacity,
     roughness,
     metalness,
+    emissive,
     aoMapIntensity,
+    envMapIntensity,
+    emissiveIntensity,
+    displacementBias,
+    displacementScale,
     normalScale: new Vector2(normalScale, normalScale)
   };
 
   return (
     <div className="app" >
       <Canvas>
+        <Environment
+          files="/assets/Sky_Cloudy_Ref.hdr"
+          background
+        />
         <CameraController />
+        <directionalLight position={[3.3, 1.0, 4.4]} intensity={lightIntensity} />
         <ambientLight color={"#5C5C5C"} />
-        <directionalLight position={[1, 1, 1]} intensity={lightIntensity} />
         <Box materialProps={materialProps} />
       </Canvas>
 

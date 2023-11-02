@@ -17,3 +17,34 @@ code {
   height: 100vh;
 }
 
+.files {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #282c34;
+  border: 1px solid black;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 200px;
+}
+
+.image-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+}
+
+.image-container img {
+  border-radius: 10px;
+}
+
+.remove-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 24px;
+  width: 24px;
+  border-radius: 8px;
+}
