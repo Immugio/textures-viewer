@@ -12,7 +12,7 @@ import { Environment } from '@react-three/drei'
 function App() {
   const [images, setImages] = useState<ImageState>(setDefaultImages());
 
-  const { lightIntensity, aoMapIntensity, normalScale } = useControls({
+  const { lightIntensity, aoMapIntensity, normalScaleX, normalScaleY } = useControls({
     lightIntensity: {
       value: 5,
       min: 0,
@@ -25,7 +25,13 @@ function App() {
       max: 10,
       step: 0.1,
     },
-    normalScale: {
+    normalScaleX: {
+      value: 2,
+      min: 0.5,
+      max: 10,
+      step: 0.1,
+    },
+    normalScaleY: {
       value: 2,
       min: 0.5,
       max: 10,
@@ -105,7 +111,32 @@ function App() {
     },
   });
 
-  const { mirrorWrapX, mirrorWrapY } = useControls("Mirror Wrap", {
+  const {
+    widthSegments,
+    heightSegments,
+    depthSegments,
+  } = useControls("BoxGeometry", {
+    widthSegments: {
+      value: 50,
+      min: 1,
+      max: 100,
+      step: 1,
+    },
+    heightSegments: {
+      value: 50,
+      min: 1,
+      max: 100,
+      step: 1,
+    },
+    depthSegments: {
+      value: 50,
+      min: 1,
+      max: 100,
+      step: 1,
+    },
+  });
+
+  const { mirrorWrapX, mirrorWrapY } = useControls("MirrorWrap", {
     mirrorWrapX: {
       value: false,
     },
@@ -162,20 +193,22 @@ function App() {
     emissiveIntensity,
     displacementBias,
     displacementScale,
-    normalScale: new Vector2(normalScale, normalScale)
+    normalScale: new Vector2(normalScaleX, normalScaleY)
   };
 
   return (
     <div className="app" >
       <Canvas>
         <Environment
-          files="/assets/Sky_Cloudy_Ref.hdr"
-          background
+          files="/assets/background.hdr"
         />
         <CameraController />
         <directionalLight position={[3.3, 1.0, 4.4]} intensity={lightIntensity} />
         <ambientLight color={"#5C5C5C"} />
-        <Box materialProps={materialProps} />
+        <Box materialProps={materialProps}
+          widthSegments={widthSegments}
+          heightSegments={heightSegments}
+          depthSegments={depthSegments} />
       </Canvas>
 
       <ImageUploader images={images} setImages={setImages} />

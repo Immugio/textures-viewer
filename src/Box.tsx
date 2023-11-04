@@ -4,8 +4,12 @@ import { Mesh } from "three";
 import { MaterialProps } from "./components/common";
 interface BoxProps {
   materialProps: MaterialProps;
+  widthSegments: number;
+  heightSegments: number;
+  depthSegments: number;
 }
-export function Box({ materialProps }: BoxProps) {
+
+export function Box({ materialProps, widthSegments, heightSegments, depthSegments }: BoxProps) {
   const mesh = useRef<Mesh>(null);
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export function Box({ materialProps }: BoxProps) {
 
   return (
     <mesh ref={mesh}>
-      <boxGeometry args={[1, 1, 1]} />
+      <boxGeometry args={[1, 1, 1, widthSegments, heightSegments, depthSegments]} />
       <meshStandardMaterial
         {...materialProps}
       />
