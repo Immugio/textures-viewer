@@ -58,11 +58,20 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
                 </div>
             ))}
             <div>
-                <p>Preset Environment:</p>
+                <p>Environment Map:</p>
                 <select onChange={(e) => setImages({ ...images, environmentImage: e.target.value })}>
-                    <option value="background.hdr">Default Preset</option>
-                    <option value="background1.hdr">Evening Road</option>
-                    <option value="background2.hdr">Night Lights</option>
+                    <option value="">Select</option>
+                    <option value="ocean.hdr">Ocean</option>
+                    <option value="sunset.hdr">Sunset</option>
+                    <option value="night.hdr">Night</option>
+                    <option value="trees.hdr">Trees</option>
+                    <option value="warehouse.hdr">Warehouse</option>
+                    <option value="forest.hdr">Forest</option>
+                    <option value="apartment.hdr">Apartment</option>
+                    <option value="studio.hdr">Studio</option>
+                    <option value="park.hdr">Park</option>
+                    <option value="lobby.hdr">Lobby</option>
+                    <option value="city.hdr">City</option>
                 </select>
             </div>
         </div>

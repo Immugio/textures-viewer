@@ -199,9 +199,9 @@ function App() {
   return (
     <div className="app" >
       <Canvas>
-        <Environment
-          files={`/assets/${images.environmentImage}`}
-        />
+        {images.environmentImage && (
+          <Environment files={`/assets/environments/${images.environmentImage}`} />
+        )}
         <CameraController />
         <directionalLight position={[3.3, 1.0, 4.4]} intensity={lightIntensity} />
         <ambientLight color={"#5C5C5C"} />
