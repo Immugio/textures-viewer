@@ -200,12 +200,13 @@ function App() {
     <div className="app" >
       <Canvas>
         <Environment
-          files="/assets/background.hdr"
+          files={`/assets/${images.environmentImage}`}
         />
         <CameraController />
         <directionalLight position={[3.3, 1.0, 4.4]} intensity={lightIntensity} />
         <ambientLight color={"#5C5C5C"} />
-        <Box materialProps={materialProps}
+        <Box
+          materialProps={materialProps}
           widthSegments={widthSegments}
           heightSegments={heightSegments}
           depthSegments={depthSegments} />

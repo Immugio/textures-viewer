@@ -44,7 +44,7 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
                             <img
                                 width={100}
                                 height={100}
-                                src={images[input.key]!.src}
+                                src={(images[input.key] as HTMLImageElement).src}
                                 alt={input.label}
                             />
                         </div>
@@ -57,6 +57,14 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
                     )}
                 </div>
             ))}
+            <div>
+                <p>Preset Environment:</p>
+                <select onChange={(e) => setImages({ ...images, environmentImage: e.target.value })}>
+                    <option value="background.hdr">Default Preset</option>
+                    <option value="background1.hdr">Evening Road</option>
+                    <option value="background2.hdr">Night Lights</option>
+                </select>
+            </div>
         </div>
     );
 }
