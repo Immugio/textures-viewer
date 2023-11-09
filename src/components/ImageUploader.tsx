@@ -44,7 +44,7 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
                             <img
                                 width={100}
                                 height={100}
-                                src={images[input.key]!.src}
+                                src={(images[input.key] as HTMLImageElement).src}
                                 alt={input.label}
                             />
                         </div>

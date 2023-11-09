@@ -8,18 +8,17 @@ export interface MaterialProps {
   roughness: number;
   metalness: number;
   aoMapIntensity: number;
-  
-  opacity?: number;
-  envMapIntensity?: number;
-  displacementScale?: number;
-  displacementBias?: number;
-  emissive?: Color;
-  emissiveIntensity?: number;
-  lightMapIntensity?: number;
+  emissive: string;
+  emissiveIntensity: number;
+  displacementScale: number;
+  displacementBias: number;
+  opacity: number;
+  envMapIntensity: number;
 }
 
 export interface ImageState {
   textureImage: HTMLImageElement | null;
   normalImage: HTMLImageElement | null;
   aoImage: HTMLImageElement | null;
+  displacementImage: HTMLImageElement | null;
 }

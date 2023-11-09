@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { CameraController } from "./components/CameraController";
 import { useControls } from "leva";
@@ -8,6 +7,7 @@ import { ImageUploader } from "./components/ImageUploader";
 import { Box } from "./Box";
 import { MirroredRepeatWrapping, RepeatWrapping, Texture, Vector2 } from "three";
 import { ImageState } from "./components/common";
+import { Environment } from '@react-three/drei'
 
 function App() {
   const [images, setImages] = useState<ImageState>(setDefaultImages());
@@ -16,34 +16,96 @@ function App() {
     lightIntensity: {
       value: 1,
       min: 0,
-      max: 3,
+      max: 10,
       step: 0.1,
     },
   });
 
-  const { aoMapIntensity } = useControls({
+  const { repeatX, repeatY, mirrorWrapX, mirrorWrapY } = useControls("Repeat", {
+    repeatX: {
+      value: 1,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+    repeatY: {
+      value: 1,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+    mirrorWrapX: {
+      value: false,
+    },
+    mirrorWrapY: {
+      value: false,
+    },
+  });
+
+  const {
+    opacity,
+    emissive,
+    emissiveIntensity,
+    roughness,
+    metalness,
+    displacementBias,
+    displacementScale,
+    aoMapIntensity,
+    normalScaleX,
+    normalScaleY,
+  } = useControls("Material", {
+    emissive: {
+      value: "#000",
+    },
+    emissiveIntensity: {
+      value: 0.2,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    roughness: {
+      value: 0.5,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    metalness: {
+      value: 0.5,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    displacementBias: {
+      value: 0.0,
+      min: -0.3,
+      max: 0.3,
+      step: 0.01,
+    },
+    displacementScale: {
+      value: 0.0,
+      min: 0.0,
+      max: 2.0,
+      step: 0.01,
+    },
+    opacity: {
+      value: 1.0,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
     aoMapIntensity: {
       value: 1,
       min: 0.1,
       max: 10,
       step: 0.1,
     },
-  });
-
-  const { repeatX, repeatY, normalScale } = useControls("Repeat", {
-    repeatX: {
-      value: 4,
-      min: 1,
+    normalScaleX: {
+      value: 2,
+      min: 0.5,
       max: 10,
-      step: 1,
+      step: 0.1,
     },
-    repeatY: {
-      value: 4,
-      min: 1,
-      max: 10,
-      step: 1,
-    },
-    normalScale: {
+    normalScaleY: {
       value: 2,
       min: 0.5,
       max: 10,
@@ -52,31 +114,44 @@ function App() {
   });
 
   const {
-    roughness,
-    metalness,
-  } = useControls("Material", {
-    roughness: {
-      value: 0.5,
-      min: 0,
-      max: 1,
-      step: 0.01,
+    widthSegments,
+    heightSegments,
+    depthSegments,
+  } = useControls("BoxGeometry", {
+    widthSegments: {
+      value: 50,
+      min: 1,
+      max: 200,
+      step: 1,
     },
-    metalness: {
-      value: 0.0,
-      min: 0,
-      max: 1,
-      step: 0.01,
+    heightSegments: {
+      value: 50,
+      min: 1,
+      max: 200,
+      step: 1,
+    },
+    depthSegments: {
+      value: 50,
+      min: 1,
+      max: 200,
+      step: 1,
     },
   });
 
-  const { mirrorWrapX, mirrorWrapY } = useControls("Mirror Wrap", {
-    mirrorWrapX: {
-      value: false,
+  const { EnvironmentMap, envMapIntensity
+  } = useControls("Environment", {
+    EnvironmentMap: {
+      value: "warehouse",
+      options: ["none", "ocean", "sunset", "night", "trees", "warehouse", "forest", "apartment", "studio", "park", "lobby", "city"],
     },
-    mirrorWrapY: {
-      value: false,
+    envMapIntensity: {
+      value: 1.0,
+      min: 0,
+      max: 2,
+      step: 0.01,
     },
-  });
+  })
+
 
   const createTexture = (
     image: HTMLImageElement | null,
@@ -108,26 +183,42 @@ function App() {
   };
 
   const map = createTexture(images.textureImage, mirrorWrapX, mirrorWrapY)
-  const normalMap = createTexture(images.normalImage, mirrorWrapX, mirrorWrapY)
   const aoMap = createTexture(images.aoImage, mirrorWrapX, mirrorWrapY)
+  const normalMap = createTexture(images.normalImage, mirrorWrapX, mirrorWrapY)
+  const displacementMap = createTexture(images.displacementImage, mirrorWrapX, mirrorWrapY)
 
   const materialProps = {
     map,
-    normalMap,
     aoMap,
+    normalMap,
+    displacementMap,
+    opacity,
     roughness,
     metalness,
+    emissive,
     aoMapIntensity,
-    normalScale: new Vector2(normalScale, normalScale)
+    envMapIntensity,
+    emissiveIntensity,
+    displacementBias,
+    displacementScale,
+    normalScale: new Vector2(normalScaleX, normalScaleY)
   };
 
   return (
     <div className="app" >
       <Canvas>
+        {EnvironmentMap !== "none" && (
+          <Environment files={`/assets/environments/${EnvironmentMap}.hdr`} />
+        )}
         <CameraController />
+        <directionalLight position={[3.3, 1.0, 4.4]} intensity={lightIntensity} />
         <ambientLight color={"#5C5C5C"} />
-        <directionalLight position={[1, 1, 1]} intensity={lightIntensity} />
-        <Box materialProps={materialProps} />
+        <Box
+          materialProps={materialProps}
+          widthSegments={widthSegments}
+          heightSegments={heightSegments}
+          depthSegments={depthSegments}
+        />
       </Canvas>
 
       <ImageUploader images={images} setImages={setImages} />

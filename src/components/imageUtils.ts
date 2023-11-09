@@ -2,9 +2,10 @@ import { ImageState } from "./common";
 
 export function setDefaultImages() {
   return {
-    textureImage: setDefaultImage("/texture.jpg"),
-    normalImage: setDefaultImage("/normal.png"),
-    aoImage: setDefaultImage("/ao.jpg"),
+    textureImage: setDefaultImage("/assets/texture.jpg"),
+    normalImage: setDefaultImage("/assets/normal.jpg"),
+    aoImage: setDefaultImage("/assets/ao.jpg"),
+    displacementImage: setDefaultImage("/assets/displacement.jpg"),
   };
 }
 
@@ -23,4 +24,5 @@ export const imageInputs: ImageInputs[] = [
   { key: "textureImage", label: "Texture" },
   { key: "normalImage", label: "Normal" },
   { key: "aoImage", label: "AO" },
+  { key: "displacementImage", label: "Displacement" },
 ];
