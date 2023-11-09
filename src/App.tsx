@@ -12,12 +12,86 @@ import { Environment } from '@react-three/drei'
 function App() {
   const [images, setImages] = useState<ImageState>(setDefaultImages());
 
-  const { lightIntensity, aoMapIntensity, normalScaleX, normalScaleY } = useControls({
+  const { lightIntensity } = useControls({
     lightIntensity: {
-      value: 5,
+      value: 1,
       min: 0,
       max: 10,
       step: 0.1,
+    },
+  });
+
+  const { repeatX, repeatY, mirrorWrapX, mirrorWrapY } = useControls("Repeat", {
+    repeatX: {
+      value: 1,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+    repeatY: {
+      value: 1,
+      min: 1,
+      max: 10,
+      step: 1,
+    },
+    mirrorWrapX: {
+      value: false,
+    },
+    mirrorWrapY: {
+      value: false,
+    },
+  });
+
+  const {
+    opacity,
+    emissive,
+    emissiveIntensity,
+    roughness,
+    metalness,
+    displacementBias,
+    displacementScale,
+    aoMapIntensity,
+    normalScaleX,
+    normalScaleY,
+  } = useControls("Material", {
+    emissive: {
+      value: "#000",
+    },
+    emissiveIntensity: {
+      value: 0.2,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    roughness: {
+      value: 0.5,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    metalness: {
+      value: 0.5,
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+    displacementBias: {
+      value: 0.0,
+      min: -0.3,
+      max: 0.3,
+      step: 0.01,
+    },
+    displacementScale: {
+      value: 0.0,
+      min: 0.0,
+      max: 2.0,
+      step: 0.01,
+    },
+    opacity: {
+      value: 1.0,
+      min: 0,
+      max: 1,
+      step: 0.01,
     },
     aoMapIntensity: {
       value: 1,
@@ -39,71 +113,6 @@ function App() {
     },
   });
 
-  const { repeatX, repeatY } = useControls("Repeat", {
-    repeatX: {
-      value: 1,
-      min: 1,
-      max: 10,
-      step: 1,
-    },
-    repeatY: {
-      value: 1,
-      min: 1,
-      max: 10,
-      step: 1,
-    },
-  });
-
-  const {
-    opacity,
-    emissive,
-    emissiveIntensity,
-    roughness,
-    metalness,
-    displacementBias,
-    displacementScale,
-  } = useControls("Material", {
-    emissive: {
-      value: "#000",
-    },
-    emissiveIntensity: {
-      value: 0.2,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
-    roughness: {
-      value: 0.5,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
-    metalness: {
-      value: 0.0,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
-    displacementBias: {
-      value: 0.0,
-      min: -1.0,
-      max: 1.0,
-      step: 0.01,
-    },
-    displacementScale: {
-      value: 0.0,
-      min: 0.0,
-      max: 2.0,
-      step: 0.01,
-    },
-    opacity: {
-      value: 1.0,
-      min: 0,
-      max: 1,
-      step: 0.01,
-    },
-  });
-
   const {
     widthSegments,
     heightSegments,
@@ -112,29 +121,28 @@ function App() {
     widthSegments: {
       value: 50,
       min: 1,
-      max: 100,
+      max: 200,
       step: 1,
     },
     heightSegments: {
       value: 50,
       min: 1,
-      max: 100,
+      max: 200,
       step: 1,
     },
     depthSegments: {
       value: 50,
       min: 1,
-      max: 100,
+      max: 200,
       step: 1,
     },
-
   });
 
   const { EnvironmentMap, envMapIntensity
   } = useControls("Environment", {
     EnvironmentMap: {
-      value: "select",
-      options: ["ocean", "sunset", "night", "trees", "warehouse", "forest", "apartment", "studio", "park", "lobby", "city"],
+      value: "warehouse",
+      options: ["none", "ocean", "sunset", "night", "trees", "warehouse", "forest", "apartment", "studio", "park", "lobby", "city"],
     },
     envMapIntensity: {
       value: 1.0,
@@ -144,14 +152,6 @@ function App() {
     },
   })
 
-  const { mirrorWrapX, mirrorWrapY } = useControls("MirrorWrap", {
-    mirrorWrapX: {
-      value: false,
-    },
-    mirrorWrapY: {
-      value: false,
-    },
-  });
 
   const createTexture = (
     image: HTMLImageElement | null,
@@ -207,7 +207,7 @@ function App() {
   return (
     <div className="app" >
       <Canvas>
-        {EnvironmentMap !== "select" && (
+        {EnvironmentMap !== "none" && (
           <Environment files={`/assets/environments/${EnvironmentMap}.hdr`} />
         )}
         <CameraController />

@@ -20,7 +20,7 @@ export function Box({ materialProps, widthSegments, heightSegments, depthSegment
 
   return (
     <mesh ref={mesh}>
-      <boxGeometry args={[1, 1, 1, widthSegments, heightSegments, depthSegments]} />
+      <boxGeometry args={[2, 2, 2, widthSegments, heightSegments, depthSegments]} />
       <meshStandardMaterial
         {...materialProps}
       />
