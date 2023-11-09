@@ -6,7 +6,6 @@ export function setDefaultImages() {
     normalImage: setDefaultImage("/assets/normal.jpg"),
     aoImage: setDefaultImage("/assets/ao.png"),
     displacementImage: setDefaultImage("/assets/disp.png"),
-    environmentImage: ""
   };
 }
 

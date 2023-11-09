@@ -62,7 +62,6 @@ function App() {
     metalness,
     displacementBias,
     displacementScale,
-    envMapIntensity
   } = useControls("Material", {
     emissive: {
       value: "#000",
@@ -103,12 +102,6 @@ function App() {
       max: 1,
       step: 0.01,
     },
-    envMapIntensity: {
-      value: 1.0,
-      min: 0,
-      max: 2,
-      step: 0.01,
-    },
   });
 
   const {
@@ -134,7 +127,22 @@ function App() {
       max: 100,
       step: 1,
     },
+
   });
+
+  const { EnvironmentMap, envMapIntensity
+  } = useControls("Environment", {
+    EnvironmentMap: {
+      value: "select",
+      options: ["ocean", "sunset", "night", "trees", "warehouse", "forest", "apartment", "studio", "park", "lobby", "city"],
+    },
+    envMapIntensity: {
+      value: 1.0,
+      min: 0,
+      max: 2,
+      step: 0.01,
+    },
+  })
 
   const { mirrorWrapX, mirrorWrapY } = useControls("MirrorWrap", {
     mirrorWrapX: {
@@ -199,8 +207,8 @@ function App() {
   return (
     <div className="app" >
       <Canvas>
-        {images.environmentImage && (
-          <Environment files={`/assets/environments/${images.environmentImage}`} />
+        {EnvironmentMap !== "select" && (
+          <Environment files={`/assets/environments/${EnvironmentMap}.hdr`} />
         )}
         <CameraController />
         <directionalLight position={[3.3, 1.0, 4.4]} intensity={lightIntensity} />
@@ -209,7 +217,8 @@ function App() {
           materialProps={materialProps}
           widthSegments={widthSegments}
           heightSegments={heightSegments}
-          depthSegments={depthSegments} />
+          depthSegments={depthSegments}
+        />
       </Canvas>
 
       <ImageUploader images={images} setImages={setImages} />

@@ -21,5 +21,4 @@ export interface ImageState {
   normalImage: HTMLImageElement | null;
   aoImage: HTMLImageElement | null;
   displacementImage: HTMLImageElement | null;
-  environmentImage: string;
 }
