@@ -4,8 +4,8 @@ export function setDefaultImages() {
   return {
     textureImage: setDefaultImage("/assets/texture.jpg"),
     normalImage: setDefaultImage("/assets/normal.jpg"),
-    aoImage: setDefaultImage("/assets/ao.png"),
-    displacementImage: setDefaultImage("/assets/disp.png"),
+    aoImage: setDefaultImage("/assets/ao.jpg"),
+    displacementImage: setDefaultImage("/assets/displacement.jpg"),
   };
 }
 
