@@ -43,6 +43,7 @@ function App() {
   });
 
   const {
+    color,
     opacity,
     emissive,
     emissiveIntensity,
@@ -54,6 +55,9 @@ function App() {
     normalScaleX,
     normalScaleY,
   } = useControls("Material", {
+    color: {
+        value: "#ffffff",
+    },
     emissive: {
       value: "#000",
     },
@@ -188,6 +192,7 @@ function App() {
   const displacementMap = createTexture(images.displacementImage, mirrorWrapX, mirrorWrapY)
 
   const materialProps = {
+    color,
     map,
     aoMap,
     normalMap,
