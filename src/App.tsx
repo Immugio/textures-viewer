@@ -123,19 +123,19 @@ function App() {
     depthSegments,
   } = useControls("BoxGeometry", {
     widthSegments: {
-      value: 50,
+      value: 1,
       min: 1,
       max: 200,
       step: 1,
     },
     heightSegments: {
-      value: 50,
+      value: 1,
       min: 1,
       max: 200,
       step: 1,
     },
     depthSegments: {
-      value: 50,
+      value: 1,
       min: 1,
       max: 200,
       step: 1,
