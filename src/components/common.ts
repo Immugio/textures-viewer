@@ -1,4 +1,4 @@
-import { Color, Texture, Vector2 } from "three";
+import { Texture, Vector2 } from "three";
 
 export interface MaterialProps {
   map: Texture | null;
@@ -21,4 +21,5 @@ export interface ImageState {
   normalImage: HTMLImageElement | null;
   aoImage: HTMLImageElement | null;
   displacementImage: HTMLImageElement | null;
+  specularImage: HTMLImageElement | null;
 }

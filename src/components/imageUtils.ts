@@ -6,6 +6,7 @@ export function setDefaultImages() {
     normalImage: setDefaultImage("/assets/normal.jpg"),
     aoImage: setDefaultImage("/assets/ao.jpg"),
     displacementImage: setDefaultImage("/assets/displacement.jpg"),
+    specularImage: setDefaultImage("/assets/spec.jpg"),
   };
 }
 
@@ -25,4 +26,5 @@ export const imageInputs: ImageInputs[] = [
   { key: "normalImage", label: "Normal" },
   { key: "aoImage", label: "AO" },
   { key: "displacementImage", label: "Displacement" },
+  { key: "specularImage", label: "Specular" },
 ];
