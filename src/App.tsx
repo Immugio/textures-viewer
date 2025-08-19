@@ -198,6 +198,8 @@ function App() {
   const normalMap = createTexture(images.normalImage, mirrorWrapX, mirrorWrapY);
   const displacementMap = createTexture(images.displacementImage, mirrorWrapX, mirrorWrapY);
   const specularIntensityMap = createTexture(images.specularImage, mirrorWrapX, mirrorWrapY);
+  const metalnessMap = createTexture(images.metalnessImage, mirrorWrapX, mirrorWrapY);
+  const roughnessMap = createTexture(images.roughnessImage, mirrorWrapX, mirrorWrapY);
 
   const materialProps = {
     color,
@@ -217,6 +219,8 @@ function App() {
     specularIntensity,
     specularColor,
     specularIntensityMap,
+    metalnessMap,
+    roughnessMap,
     normalScale: new Vector2(normalScaleX, normalScaleY),
   };
 

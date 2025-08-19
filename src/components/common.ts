@@ -22,4 +22,6 @@ export interface ImageState {
   aoImage: HTMLImageElement | null;
   displacementImage: HTMLImageElement | null;
   specularImage: HTMLImageElement | null;
+  metalnessImage: HTMLImageElement | null;
+  roughnessImage: HTMLImageElement | null;
 }

@@ -5,8 +5,10 @@ export function setDefaultImages() {
     textureImage: setDefaultImage("/assets/texture.jpg"),
     normalImage: setDefaultImage("/assets/normal.jpg"),
     aoImage: setDefaultImage("/assets/ao.jpg"),
-    displacementImage: setDefaultImage("/assets/displacement.jpg"),
-    specularImage: setDefaultImage("/assets/spec.jpg"),
+    displacementImage: null,
+    specularImage: null,
+    metalnessImage: null,
+    roughnessImage: null,
   };
 }
 
@@ -27,4 +29,6 @@ export const imageInputs: ImageInputs[] = [
   { key: "aoImage", label: "AO" },
   { key: "displacementImage", label: "Displacement" },
   { key: "specularImage", label: "Specular" },
+  { key: "metalnessImage", label: "Metalness" },
+  { key: "roughnessImage", label: "Roughness" },
 ];
