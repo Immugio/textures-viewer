@@ -26,8 +26,9 @@ code {
   color: white;
   padding: 15px;
   border-radius: 10px;
-  width: 200px;
-  bottom: 10px;
+  width: 220px;
+  max-height: calc(100vh - 20px);
+  box-sizing: border-box;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -57,8 +58,8 @@ code {
   width: 60%;
   padding: 8px 12px;
   background-color: transparent;
-  border: 2px solid #c0392b;
-  color: #c0392b;
+  border: 2px solid #3C93FF;
+  color: #3C93FF;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 700;
@@ -70,13 +71,13 @@ code {
 
 .clear-button:hover,
 .clear-button:focus {
-  background: #e74c3c18;
-  color: #c0392b;
-  border-color: #c0392b;
+  background:rgba(60, 147, 255, 0.1);
+  color: #3C93FF;
+  border-color: #3C93FF;
 }
 
 .clear-button:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.25);
+  box-shadow: 0 0 0 3px rgba(60, 147, 255, 0.35);
 }
 
