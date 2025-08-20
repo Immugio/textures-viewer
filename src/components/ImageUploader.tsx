@@ -28,6 +28,18 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
         setImages((prevImages) => ({ ...prevImages, [key]: null }));
     };
 
+    const clearMaps = () => {
+        setImages({
+            textureImage: null,
+            normalImage: null,
+            aoImage: null,
+            displacementImage: null,
+            specularImage: null,
+            metalnessImage: null,
+            roughnessImage: null,
+        });
+    };
+
     return (
         <div className="files">
             {imageInputs.map((input: ImageInputs) => (
@@ -57,6 +69,7 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
                     )}
                 </div>
             ))}
+            <button className="clear-button" onClick={clearMaps}>Clear Maps</button>
         </div>
     );
 }
