@@ -7,7 +7,7 @@ import { ImageUploader } from "./components/ImageUploader";
 import { Box } from "./Box";
 import { MirroredRepeatWrapping, RepeatWrapping, Texture, Vector2 } from "three";
 import { ImageState } from "./components/common";
-import { Environment } from '@react-three/drei'
+import { Environment } from '@react-three/drei';
 
 function App() {
   const [images, setImages] = useState<ImageState>(setDefaultImages());
@@ -54,9 +54,11 @@ function App() {
     aoMapIntensity,
     normalScaleX,
     normalScaleY,
+    specularIntensity,
+    specularColor,
   } = useControls("Material", {
     color: {
-        value: "#ffffff",
+      value: "#ffffff",
     },
     emissive: {
       value: "#000",
@@ -115,6 +117,15 @@ function App() {
       max: 10,
       step: 0.1,
     },
+    specularIntensity: {
+      value: 1.0,
+      min: 0,
+      max: 10,
+      step: 0.01,
+    },
+    specularColor: {
+      value: "#ffffff",
+    },
   });
 
   const {
@@ -142,8 +153,7 @@ function App() {
     },
   });
 
-  const { EnvironmentMap, envMapIntensity
-  } = useControls("Environment", {
+  const { EnvironmentMap, envMapIntensity } = useControls("Environment", {
     EnvironmentMap: {
       value: "warehouse",
       options: ["none", "ocean", "sunset", "night", "trees", "warehouse", "forest", "apartment", "studio", "park", "lobby", "city"],
@@ -154,42 +164,42 @@ function App() {
       max: 2,
       step: 0.01,
     },
-  })
-
+  });
 
   const createTexture = (
     image: HTMLImageElement | null,
     wrapX: boolean,
     wrapY: boolean
   ): Texture | null => {
-
     if (!image) {
       return null;
-    } else {
-
-      const texture = new Texture();
-      texture.image = image;
-
-      if (image.complete) {
-        texture.needsUpdate = true;
-      } else {
-        image.addEventListener("load", () => {
-          texture.needsUpdate = true;
-        });
-      }
-
-      texture.repeat.set(repeatX, repeatY);
-      texture.wrapS = wrapX ? MirroredRepeatWrapping : RepeatWrapping;
-      texture.wrapT = wrapY ? MirroredRepeatWrapping : RepeatWrapping;
-
-      return texture;
     }
+
+    const texture = new Texture();
+    texture.image = image;
+
+    if (image.complete) {
+      texture.needsUpdate = true;
+    } else {
+      image.addEventListener("load", () => {
+        texture.needsUpdate = true;
+      });
+    }
+
+    texture.repeat.set(repeatX, repeatY);
+    texture.wrapS = wrapX ? MirroredRepeatWrapping : RepeatWrapping;
+    texture.wrapT = wrapY ? MirroredRepeatWrapping : RepeatWrapping;
+
+    return texture;
   };
 
-  const map = createTexture(images.textureImage, mirrorWrapX, mirrorWrapY)
-  const aoMap = createTexture(images.aoImage, mirrorWrapX, mirrorWrapY)
-  const normalMap = createTexture(images.normalImage, mirrorWrapX, mirrorWrapY)
-  const displacementMap = createTexture(images.displacementImage, mirrorWrapX, mirrorWrapY)
+  const map = createTexture(images.textureImage, mirrorWrapX, mirrorWrapY);
+  const aoMap = createTexture(images.aoImage, mirrorWrapX, mirrorWrapY);
+  const normalMap = createTexture(images.normalImage, mirrorWrapX, mirrorWrapY);
+  const displacementMap = createTexture(images.displacementImage, mirrorWrapX, mirrorWrapY);
+  const specularIntensityMap = createTexture(images.specularImage, mirrorWrapX, mirrorWrapY);
+  const metalnessMap = createTexture(images.metalnessImage, mirrorWrapX, mirrorWrapY);
+  const roughnessMap = createTexture(images.roughnessImage, mirrorWrapX, mirrorWrapY);
 
   const materialProps = {
     color,
@@ -206,11 +216,16 @@ function App() {
     emissiveIntensity,
     displacementBias,
     displacementScale,
-    normalScale: new Vector2(normalScaleX, normalScaleY)
+    specularIntensity,
+    specularColor,
+    specularIntensityMap,
+    metalnessMap,
+    roughnessMap,
+    normalScale: new Vector2(normalScaleX, normalScaleY),
   };
 
   return (
-    <div className="app" >
+    <div className="app">
       <Canvas>
         {EnvironmentMap !== "none" && (
           <Environment files={`/assets/environments/${EnvironmentMap}.hdr`} />
@@ -227,7 +242,7 @@ function App() {
       </Canvas>
 
       <ImageUploader images={images} setImages={setImages} />
-    </div >
+    </div>
   );
 }
 
