@@ -5,6 +5,7 @@
   "dependencies": {
     "@mediapipe/tasks-vision": "^0.10.7",
     "@react-three/drei": "^9.88.10",
+    "node-fetch": "^3.3.2",
     "@react-three/fiber": "^8.4.1",
     "@types/jest": "^29.5.7",
     "@types/node": "^16.11.51",
